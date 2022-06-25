@@ -34,6 +34,11 @@ public class PersonController {
     PersonEntity replaceEntity(@PathVariable int id, @RequestBody PersonEntity newEntity){
         return service.replaceEntity(id, newEntity);
     }
+
+    @PatchMapping("{id}")
+    PersonEntity updateEntity(@PathVariable int id, @RequestBody PersonEntity updatedEntity){
+        return service.updateEntity(id, updatedEntity);
+    }
 }
 
 

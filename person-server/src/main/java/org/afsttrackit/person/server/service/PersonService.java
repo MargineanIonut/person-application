@@ -18,8 +18,8 @@ public class PersonService {
 
     public List<PersonEntity> getAll(PersonFilter filter) {
         return repository.findAll().stream()
-                .filter(person-> applyNameFilter(filter, person))
-                .filter(person-> filter.minAge() == null || person.getAge() >= filter.minAge())
+                .filter(person -> applyNameFilter(filter, person))
+                .filter(person -> filter.minAge() == null || person.getAge() >= filter.minAge())
                 .toList();
 
     }
@@ -49,5 +49,21 @@ public class PersonService {
     }
 
     private void validatePerson(PersonEntity newEntity) {
+    }
+
+    public PersonEntity updateEntity(int id, PersonEntity updatedEntity) {
+        return repository.findById(id)
+                .map(dbEntity -> updateOneEntity(dbEntity, updatedEntity))
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find person with id " + id));
+    }
+
+    private PersonEntity updateOneEntity(PersonEntity dbEntity, PersonEntity updatedEntity) {
+        if (updatedEntity.getName() != null) {
+            dbEntity.setName(updatedEntity.getName());
+        }
+        if(updatedEntity.getAge() > 0) {
+            dbEntity.setAge(updatedEntity.getAge());
+        }
+        return dbEntity;
     }
 }
